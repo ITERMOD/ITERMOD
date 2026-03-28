@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你好,迭代</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+/* ######## 全新配色：简洁白色现代风 ######## */
+:root {
+    --primary: #007AFF;      /* iOS 原生蓝 */
+    --primary-dark: #0051D5; /* 深蓝 */
+    --primary-light: #409CFF; /* 浅蓝 */
+
+    --bg: #FFFFFF;           /* 主背景：纯白 */
+    --bg-card: #F2F2F7;      /* 卡片背景：浅灰 */
+    --bg-light: #E5E5EA;    /* 分割背景：更浅灰 */
+
+    --text: #000000;        /* 主文字：黑色 */
+    --text-muted: #8E8E93;  /* 辅助文字：iOS 灰 */
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background-color: var(--bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 32px;
+    margin-right: 10px;
+}
+
+.logo h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.download-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.download-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Banner样式 */
+.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 160px 0 100px;
+    margin-top: 70px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.hero p {
+    font-size: 20px;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    opacity: 0.9;
+}
+
+.hero-btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* ========== iOS 风格按钮 ========== */
+.btn {
+    padding: 12px 30px;
+    border-radius: 12px; /* iOS 圆角 */
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #FFFFFF;
+    color: var(--primary);
+    box-shadow: 0 2px 10px rgba(0, 122, 255, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #F5F5F7;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 功能介绍 */
+.features {
+    padding: 100px 0;
+    background-color: var(--bg);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 60px;
+    font-weight: 300;
+    color: var(--text);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.feature-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-img {
+    height: 180px;
+    background-color: var(--bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 60px;
+}
+
+.feature-content {
+    padding: 25px;
+}
+
+.feature-content h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--text);
+}
+
+.feature-content p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+/* 下载区域 */
+.download-section {
+    background-color: var(--bg-light);
+    padding: 100px 0;
+    text-align: center;
+}
+
+.download-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.download-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 40px 30px;
+    width: 260px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.download-card i {
+    font-size: 50px;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.download-card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* 页脚 */
+footer {
+    background-color: #F2F2F7;
+    color: var(--text-muted);
+    padding: 60px 0 30px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column h3 {
+    color: var(--text);
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--bg-light);
+    color: var(--text);
+    transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #D1D1D6;
+    font-size: 14px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 36px;
+    }
+    
+    .hero p {
+        font-size: 18px;
+    }
+    
+    .hero-btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+}
+
+</style>
+
+
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+  <img 
+    src="https://s41.ax1x.com/2026/02/28/peSm4iD.png" 
+    alt="迭代-模组" 
+    style="width: 32px; height: 32px; vertical-align: middle; border-radius: 8px;"
+  >
+  <h1>迭代-模组</h1>
+</div>
+
+            <ul class="nav-links">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+            <a href="https://t.me/ITERMOD" class="download-btn" target="_blank" rel="noopener noreferrer">加入频道</a>
+
+
+        </div>
+    </nav>
+
+    <!-- 主横幅 -->
+    <!-- 主横幅 -->
+<section class="hero">
+    <div class="container">
+        <!-- 新增：顶部图片区（iOS圆角） -->
+        <div class="hero-image" style="
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 16px; /* iOS 圆角 */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        ">
+            <img src="https://s41.ax1x.com/2026/02/28/peSm4iD.png" 
+                 alt="迭代 MOD" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <h2>迭代，为稳定而生</h2>
+        <p>ITERATION MOD 超1000多人同时</p>
+        <p>私盘免登录，不限流请勿相信里面中的VPN那是我接广告里面有获取通讯录权限等等</p>
+        <div class="hero-btns">
+            <a href="https://www.123912.com/s/odfojv-qEz3H" class="btn btn-primary">下载客户端</a>
+            <a href="https://www.123865.com/s/ToQqjv-Ou4k3" class="btn btn-outline">下载obb</a>
+        </div>
+    </div>
+</section>
+
+
+   <!-- 功能介绍 · 迭代 ITERATION 专属专区 -->
+<!-- 功能介绍 · 迭代 ITERATION 专属专区 -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">关于 · 迭代 ITERATION</h2>
+
+        <!-- 项目简介 -->
+        <div style="text-align: center; margin-bottom: 50px; max-width: 800px; margin: 0 auto 50px;">
+            <p style="font-size: 18px; color: #666; line-height: 1.8;">
+                <strong style="color: #007AFF;">ITERATION（迭代）</strong> 是专为 PUBG Mobile 开发者构建的
+                轻量化内核调试与安全分析框架。
+            </p>
+            <p style="font-size: 16px; color: #666; margin-top: 15px;">
+                我们专注于提供高效可控的调试工具集，用于游戏客户端性能验证、内存调试、
+                作弊机制测试及 UI 渲染层调试。每一次迭代，都追求更稳定、更精准、更安全。
+            </p>
+        </div>
+
+        <!-- 核心特性 -->
+        <div class="feature-grid">
+            <!-- 卡片1：内核调试 -->
+            <div class="feature-card">
+                <div class="feature-img" style="background: url('https://s41.ax1x.com/2026/02/28/peSMJYT.md.png') center/cover; height: 200px;">
+                </div>
+                <div class="feature-content">
+                    <h3>内核级调试</h3>
+                    <p>封装高效内存接口，支持地址映射、快照扫描与行为分析，专为深层逆向调试设计。</p>
+                </div>
+            </div>
+
+            <!-- 卡片2：高精度渲染 -->
+            <div class="feature-card">
+                <div class="feature-img" style="background: url('https://s41.ax1x.com/2026/02/28/peSMZY8.md.png') center/cover; height: 200px;">
+                </div>
+                <div class="feature-content">
+                    <h3>高精度渲染层</h3>
+                    <p>基于原生图形接口构建的可视化 HUD，支持像素级 UI 校准与实时绘制。</p>
+                </div>
+            </div>
+
+            <!-- 卡片3：安全验证 -->
+            <div class="feature-card">
+                <div class="feature-img" style="background: url('https://s41.ax1x.com/2026/02/28/peSl1iV.md.png') center/cover; height: 200px;">
+                </div>
+                <div class="feature-content">
+                    <h3>安全验证框架</h3>
+                    <p>提供游戏客户端防御机制的压力测试接口，仅用于合法安全研究与授权测试。</p>
+                </div>
+            </div>
+
+            <!-- 卡片4：模块化架构 -->
+            <div class="feature-card">
+                <div class="feature-img" style="background: url('https://s41.ax1x.com/2026/02/28/peSMVFf.md.png') center/cover; height: 200px;">
+                </div>
+                <div class="feature-content">
+                    <h3>模块化架构</h3>
+                    <p>插件化结构支持快速迭代、即插即用，每一次版本更新都保持轻量与稳定。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- 下载区域 -->
+    <section class="download-section">
+        <div class="container">
+            <h2 class="section-title">下载迭代模组</h2>
+            <p></p>
+            
+            <div class="download-cards">
+                <div class="download-card">
+                    <i class="fab fa-apple"></i>
+                    <h3>迭代 S系列</h3>
+                    <p></p>
+                    <a href="https://www.123912.com/s/odfojv-qEz3H" class="btn btn-primary">下载(123)</a>
+                    <a href="https://share.feijipan.com/s/Va1FHGPR" class="btn btn-primary">下载(小飞机)</a>
+                    <a href="https://wwwk.qyshare.com:2083/s/ggpagx" class="btn btn-primary">下载(私盘免登)</a>
+                </div>
+                
+                <div class="download-card">
+                    <i class="fab fa-android"></i>
+                    <h3>迭代 重铸A</h3>
+                    <p></p>
+                    <a href="https://www.123912.com/s/odfojv-qEz3H" class="btn btn-primary">下载(123)</a>
+                    <a href="https://share.feijipan.com/s/Va1FHGPR" class="btn btn-primary">下载(小飞机)</a>
+                    <a href="https://wwwk.qyshare.com:2083/s/ggpagx" class="btn btn-primary">下载(私盘免登)</a>
+                </div>
+                
+                <div class="download-card">
+                    <i class="fab fa-windows"></i>
+                    <h3> </h3>
+                    <p></p>
+                    <a href="https://www.123912.com/s/odfojv-qEz3H" class="btn btn-primary">下载(123)</a>
+                    <a href="https://share.feijipan.com/s/Va1FHGPR" class="btn btn-primary">下载(小飞机)</a>
+                    <a href="https://wwwk.qyshare.com:2083/s/ggpagx" class="btn btn-primary">下载(私盘免登)</a>
+                    
+                </div>
+                
+                <div class="download-card">
+                    <i class="fab fa-apple"></i>
+                    <h3></h3>
+                    <p></p>
+                    <a href="https://www.123912.com/s/odfojv-qEz3H" class="btn btn-primary">下载(123)</a>
+                    <a href="https://share.feijipan.com/s/Va1FHGPR" class="btn btn-primary">下载(小飞机)</a>
+                    <a href="https://wwwk.qyshare.com:2083/s/ggpagx" class="btn btn-primary">下载(私盘免登)</a>
+                </div>
+            </div>
+        </div>
+ 
+    </section>
+    
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>合作</h3>
+                    <ul class="footer-lnks">
+                        <li><a href="http://88fa.cn/DUk">广告位</a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3></h3>
+                    <ul class="footer-links">
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>关注我们</h3>
+                    <p></p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-x"></i></a>
+                        <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=yivY2Pnl96HYCeA5IJlsCFJBOpjUFrqRkhCSd8GIKt6DN2hgSeyEt2lGyFX7J1yD&busi_data=eyJncm91cENvZGUiOiI0Mzg1NjcyNDIiLCJ0b2tlbiI6InhSS0lpaUNZOTg1c056VGVHVW1LNElaMXJCcnZvcUFmdXVvdFB6bStoWmxqMmZqWFlFczB0ZzJKTjVXckF1bDUiLCJ1aW4iOiIzODc3NDQzNjQ3In0%3D&data=6V6EjM0CZ-jvGeSa_rWZ2c-cHmXd_ZlwFRg0H2sYDdgA4-bTLe28CiYEsuv8w---SpNIQi1w6VG8Ob2w2NGnHw&svctype=4&tempid=h5_group_info" target="_blank" rel="noopener noreferrer"><i class="fab fa-qq"></i></a>
+
+                        <a href="https://t.me/ITERMOD" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>IT © 2023-2026</p>
+                <p>迭代团队 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
